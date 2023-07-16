@@ -13,7 +13,51 @@
 
 <body>
   <div class="page-content container note-has-grid">
-    <ul class="nav nav-pills p-3 bg-white mb-3 rounded-pill align-items-center">
+    <!-- <nav class="navbar nav nav-pills navbar-expand-lg p-3 navbar-light bg-white mb-3 rounded-pill"> -->
+    <nav class="navbar nav nav-pills navbar-expand-lg p-3 navbar-light bg-white mb-3 rounded-lg">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarToggler">
+        <!-- <a class="navbar-brand" href="#">Hidden brand</a> -->
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+          <li class="nav-item">
+            <a href="javascript:void(0)"
+              class="nav-link rounded-pill note-link d-flex align-items-center px-2 px-md-3 mr-0 mr-md-2 active"
+              id="all-category">
+              <i class="icon-layers mr-1"></i><span class="d-md-block">All Notes</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="javascript:void(0)" class="nav-link rounded-pill note-link d-flex align-items-center px-2 px-md-3 mr-0 mr-md-2" id="note-social">
+              <i class="icon-share-alt mr-1"></i><span class="d-md-block">Social</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="javascript:void(0)"
+            class="nav-link rounded-pill note-link d-flex align-items-center px-2 px-md-3 mr-0 mr-md-2"
+            id="note-important">
+            <i class="icon-tag mr-1"></i><span class="d-md-block">Important</span></a>
+          </li>
+        
+        </ul>
+
+        <form class="form-inline my-2 my-lg-0">
+          <span class="m-1">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+          </span>
+          <a href="javascript:void(0)" id="add-notes" class="btn-primary rounded-pill d-flex align-items-center px-3">
+            <i class="icon-note m-1"></i><span class="d-md-block font-14 p-2">Add Notes</span>
+          </a>
+          
+        </form>
+      </div>
+    </nav>
+    <!-- <ul class="nav nav-pills p-3 bg-white mb-3 rounded-pill align-items-center">
       <li class="nav-item">
         <a href="javascript:void(0)"
           class="nav-link rounded-pill note-link d-flex align-items-center px-2 px-md-3 mr-0 mr-md-2 active"
@@ -38,7 +82,7 @@
           id="add-notes">
           <i class="icon-note m-1"></i><span class="d-none d-md-block font-14">Add Notes</span></a>
       </li>
-    </ul>
+    </ul> -->
     <div class="tab-content bg-transparent">
       <div id="note-full-container" class="note-has-grid row">
         <div class="col-md-4 single-note-item all-category" style>
