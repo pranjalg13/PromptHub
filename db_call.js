@@ -4,30 +4,70 @@ function getAllPrompts() {
   const endpointURL =
     "https://eu-central-1.data.tidbcloud.com/api/v1beta/app/dataapp-xwjfPxjq/endpoint/v1/getAllPrompts";
 
-  const xhr = new XMLHttpRequest();
-  xhr.open("GET", endpointURL, true);
-  xhr.setRequestHeader("endpoint-type", "draft");
-  xhr.setRequestHeader(
-    "Authorization",
-    `Basic ${btoa(`${publicKey}:${privateKey}`)}`
-  );
+  const authHeader = `Basic ${btoa(`${publicKey}:${privateKey}`)}`;
 
-  xhr.onload = function () {
-    if (xhr.status >= 200 && xhr.status < 400) {
-      const response = JSON.parse(xhr.responseText);
-      console.log(response);
+  fetch(endpointURL, {
+    method: "GET",
+    headers: {
+      "endpoint-type": "draft",
+      Authorization: authHeader,
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+    })
+    .then((data) => {
+      console.log(data);
       // Process the response data here
-    } else {
-      console.error("Error:", xhr.status, xhr.statusText);
-    }
-  };
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
+}
 
-  xhr.onerror = function () {
-    console.error("Request failed");
-  };
+function addPrompt(prompt, tags, title) {
+  const publicKey = process.env.PUBLIC_KEY;
+  const privateKey = process.env.PRIVATE_KEY;
+  const endpointURL =
+    "https://eu-central-1.data.tidbcloud.com/api/v1beta/app/dataapp-xwjfPxjq/endpoint/v1/addPrompt";
 
-  xhr.send();
+  const authHeader = `Digest ${btoa(`${publicKey}:${privateKey}`)}`;
+
+  const postData = JSON.stringify({
+    prompt,
+    tags,
+    title,
+  });
+
+  fetch(endpointURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "endpoint-type": "draft",
+      Authorization: authHeader,
+    },
+    body: postData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      // Process the response data here
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 // Call the function
 getAllPrompts();
+
+// Example usage
+const prompt = "Enter your prompt here!";
+const tags = "chatgpt,prompts";
+const title = "Best Prompts for ChatGPT";
+
+addPrompt(prompt, tags, title);
