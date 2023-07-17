@@ -9,8 +9,7 @@ function getAllPrompts() {
   fetch(endpointURL, {
     method: "GET",
     headers: {
-      "endpoint-type": "draft",
-      Authorization: authHeader,
+      Authorization: authHeader
     },
   })
     .then((response) => {
@@ -47,7 +46,6 @@ function addPrompt(prompt, tags, title) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "endpoint-type": "draft",
       Authorization: authHeader,
     },
     body: postData,
@@ -61,6 +59,84 @@ function addPrompt(prompt, tags, title) {
       console.error("Error:", error);
     });
 }
+
+function likePrompt(promptId) {
+  const publicKey = process.env.PUBLIC_KEY;
+  const privateKey = process.env.PRIVATE_KEY;
+  const endpointURL =
+    "https://eu-central-1.data.tidbcloud.com/api/v1beta/app/dataapp-xwjfPxjq/endpoint/v1/prompt/like";
+
+  const authHeader = `Digest ${btoa(`${publicKey}:${privateKey}`)}`;
+
+  const requestData = JSON.stringify({
+    id: promptId,
+  });
+
+  fetch(endpointURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: authHeader,
+    },
+    body: requestData,
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log("Prompt liked successfully.");
+        // Handle successful response
+      } else {
+        console.error("Error:", response.status, response.statusText);
+        // Handle error response
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      // Handle network error
+    });
+}
+
+function dislikePrompt(promptId) {
+  const publicKey = process.env.PUBLIC_KEY;
+  const privateKey = process.env.PRIVATE_KEY;
+  const endpointURL =
+    "https://eu-central-1.data.tidbcloud.com/api/v1beta/app/dataapp-xwjfPxjq/endpoint/v1/prompt/dislike";
+
+  const authHeader = `Digest ${btoa(`${publicKey}:${privateKey}`)}`;
+
+  const requestData = JSON.stringify({
+    id: promptId,
+  });
+
+  fetch(endpointURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: authHeader,
+    },
+    body: requestData,
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log("Prompt disliked successfully.");
+        // Handle successful response
+      } else {
+        console.error("Error:", response.status, response.statusText);
+        // Handle error response
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      // Handle network error
+    });
+}
+
+// Example usage
+const promptId = "1";
+
+likePrompt(promptId);
+
+// Example usage
+dislikePrompt(promptId);
 
 // Call the function
 getAllPrompts();
