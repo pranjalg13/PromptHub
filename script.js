@@ -1,4 +1,11 @@
+const tags = {
+  "Computer" : "#e76f51",
+  "Science" : "#f4a261",
+  "Social" : "#e9c46a"
+};
+
 $(function () {
+
   function removeNote() {
     $(".remove-note")
       .off("click")
@@ -102,6 +109,13 @@ $(function () {
       "note-has-description"
     ).value;
 
+    var $_noteTags = $("#note-has-tag").val();
+    $tagStr="";
+    
+    $_noteTags.forEach(element => {
+      $tagStr+=(`<span class="badge badge-pill" style="background-color:${tags[element]};">${element}</span>`);
+    });
+
     $html =
       '<div class="col-md-4 single-note-item all-category"><div class="card card-body">' +
       '<span class="side-stick"></span>' +
@@ -112,6 +126,8 @@ $(function () {
       '<i class="point fa fa-circle ml-1 font-10"></i></h5>' +
       '<p class="note-date font-12 text-muted">' +
       today +
+      '&nbsp;' +
+      $tagStr +
       "</p>" +
       '<div class="note-content">' +
       '<p class="note-inner-content text-muted" data-noteContent="' +
@@ -162,6 +178,27 @@ $(function () {
   addLabelGroups();
 
   $("#btn-n-add").attr("disabled", "disabled");
+
+  for(var element in tags){
+    //var opt = tags[element];
+    var el = document.createElement("option");
+    el.textContent = element;
+    el.value = element;
+    $("#note-has-tag").append(el);
+  }
+
+  $("#note-has-tag").change(function () {
+      var $this = $(this),
+      value = $this.val();
+      
+      if (value !== null && value.length > 2) {
+          $this.val(this.lastValidValue || null).trigger('change');
+      } 
+      else {
+          this.lastValidValue = value;
+      }
+  }).trigger('change');
+
 });
 
 $("#note-has-title").keyup(function () {
@@ -178,3 +215,6 @@ $("#note-has-title").keyup(function () {
     $("#btn-n-add").removeAttr("disabled");
   }
 });
+
+
+
