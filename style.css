@@ -3,6 +3,11 @@ body {
   margin-top: 20px;
 }
 
+.search-tag{
+  margin: 2px;
+  padding: 5px;
+}
+
 .card {
   position: relative;
   display: flex;

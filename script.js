@@ -26,6 +26,10 @@ $(function () {
       });
   }
 
+  function removeTag(){
+    console.log("HII");
+  }
+
   function addLabelGroups() {
     $(".category-selector .badge-group-item")
       .off("click")
@@ -217,4 +221,78 @@ $("#note-has-title").keyup(function () {
 });
 
 
+function removeTag(event){
+  var tagsSel = JSON.parse(event.target.parentElement.parentElement.dataset.tagsSelected);
+  var ind = tagsSel.indexOf(event.target.parentElement.textContent);
+  if(ind!=-1){
+    tagsSel.splice(ind,1);
+    if(tagsSel.length==0){
+      event.target.parentElement.parentElement.dataset.tagsSelected = "[]";
+      event.target.parentElement.parentElement.textContent = "Tags";
+    }
+    else{
+      event.target.parentElement.parentElement.dataset.tagsSelected = JSON.stringify(tagsSel);
+    }
+    event.target.parentElement.remove();
+  }
+  
+}
 
+$('.dropdown').each(function(index, dropdown) {
+
+  //Find the input search box
+  let search = $(dropdown).find('.search');
+
+  //Find every item inside the dropdown
+  let items = $(dropdown).find('.dropdown-item');
+
+  //Capture the event when user types into the search box
+  $(search).on('input', function() {
+    filter($(search).val().trim().toLowerCase())
+  });
+
+  //For every word entered by the user, check if the symbol starts with that word
+  //If it does show the symbol, else hide it
+  function filter(word) {
+    let length = items.length
+    let collection = []
+    let hidden = 0
+    for (let i = 0; i < length; i++) {
+      if (items[i].value.toString().toLowerCase().includes(word)) {
+        $(items[i]).show()
+      } else {
+        $(items[i]).hide()
+        hidden++
+      }
+    }
+
+    //If all items are hidden, show the empty view
+    if (hidden === length) {
+      $(dropdown).find('.dropdown_empty').show();
+    } else {
+      $(dropdown).find('.dropdown_empty').hide();
+    }
+  }
+
+  
+
+  //If the user clicks on any item, set the title of the button as the text of the item
+  $(dropdown).find('.dropdown-menu').find('.menuItems').on('click', '.dropdown-item', function() {
+  var tagsel = JSON.parse(($('#selected-tags')[0].dataset.tagsSelected));
+  if(!tagsel.includes($(this)[0].value) && tagsel.length<2){
+    tagsel.push($(this)[0].value);
+    if($('#selected-tags')[0].textContent.trim()=="Tags"){
+      $('#selected-tags')[0].textContent="";
+    } 
+    $('#selected-tags')[0].dataset.tagsSelected = JSON.stringify(tagsel);
+    $('#selected-tags')[0].innerHTML += `<span class="badge badge-pill search-tag" style="background-color:${tags[$(this)[0].value]}">${$(this)[0].value}<i class="fa fa-times" onclick="removeTag(event)" aria-hidden="true"></i></span>`;
+  }
+
+  
+    
+    
+    // $(dropdown).find('#selected-tags').text($(this)[0].value);
+    // $(dropdown).find('#selected-tags').dropdown('toggle');
+
+  })
+});

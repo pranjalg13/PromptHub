@@ -47,7 +47,21 @@
 
         <form class="form-inline my-2 my-lg-0">
           <span class="m-1">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->
+            <div class="dropdown">
+              <div class="custom-select" id="selected-tags" data-tags-selected='[]' data-toggle="dropdown" aria-haspopup="true" style="background-color: white;border: 1px black solid;">
+                Tags
+              </div>
+              <div class="dropdown-menu" aria-labelledby="dropdown_user">
+                <input type="search" class="form-control search" placeholder="Search.." autofocus="autofocus">
+                <div class="menuItems">
+                  <input type="button" class="dropdown-item" type="button" value="Social" />
+                  <input type="button" class="dropdown-item" type="button" value="Computer" />
+                  <input type="button" class="dropdown-item" type="button" value="Science" />
+                </div>
+                <div style="display:none;" class="dropdown-header dropdown_empty">No entry found</div>
+              </div>
+            </div>  
             <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
           </span>
           <a href="javascript:void(0)" id="add-notes" class="btn-primary rounded-pill d-flex align-items-center px-3">
