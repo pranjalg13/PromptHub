@@ -115,13 +115,17 @@ $(function () {
 
     var $_noteTags = $("#note-has-tag").val();
     $tagStr="";
-    
+    $tagclasses = "";
+
     $_noteTags.forEach(element => {
       $tagStr+=(`<span class="badge badge-pill" style="background-color:${tags[element]};">${element}</span>`);
+      $tagclasses += `note-${element} `;
     });
 
     $html =
-      '<div class="col-md-4 single-note-item all-category"><div class="card card-body">' +
+      '<div class="col-md-4 single-note-item ' +
+      $tagclasses+
+      '"><div class="card card-body">' +
       '<span class="side-stick"></span>' +
       '<h5 class="note-title text-truncate w-75 mb-0" data-noteHeading="' +
       $_noteTitle +
@@ -184,7 +188,6 @@ $(function () {
   $("#btn-n-add").attr("disabled", "disabled");
 
   for(var element in tags){
-    //var opt = tags[element];
     var el = document.createElement("option");
     el.textContent = element;
     el.value = element;
@@ -234,25 +237,34 @@ function removeTag(event){
       event.target.parentElement.parentElement.dataset.tagsSelected = JSON.stringify(tagsSel);
     }
     event.target.parentElement.remove();
+    showWithTags();
   }
   
 }
 
+function showWithTags() {
+  var selTags = JSON.parse($('#selected-tags')[0].dataset.tagsSelected);
+  if(selTags.length==0){
+    $("#note-full-container > div").fadeIn();
+    $("#note-full-container > div").show();
+  }
+  else{
+    var classesToShow = '.note-'+selTags.join(',.note-');
+    var $el = $(classesToShow).fadeIn();
+    $("#note-full-container > div").not($el).hide();
+  }
+}
+
 $('.dropdown').each(function(index, dropdown) {
 
-  //Find the input search box
   let search = $(dropdown).find('.search');
 
-  //Find every item inside the dropdown
   let items = $(dropdown).find('.dropdown-item');
 
-  //Capture the event when user types into the search box
   $(search).on('input', function() {
     filter($(search).val().trim().toLowerCase())
   });
 
-  //For every word entered by the user, check if the symbol starts with that word
-  //If it does show the symbol, else hide it
   function filter(word) {
     let length = items.length
     let collection = []
@@ -266,7 +278,6 @@ $('.dropdown').each(function(index, dropdown) {
       }
     }
 
-    //If all items are hidden, show the empty view
     if (hidden === length) {
       $(dropdown).find('.dropdown_empty').show();
     } else {
@@ -276,7 +287,6 @@ $('.dropdown').each(function(index, dropdown) {
 
   
 
-  //If the user clicks on any item, set the title of the button as the text of the item
   $(dropdown).find('.dropdown-menu').find('.menuItems').on('click', '.dropdown-item', function() {
   var tagsel = JSON.parse(($('#selected-tags')[0].dataset.tagsSelected));
   if(!tagsel.includes($(this)[0].value) && tagsel.length<2){
@@ -286,13 +296,8 @@ $('.dropdown').each(function(index, dropdown) {
     } 
     $('#selected-tags')[0].dataset.tagsSelected = JSON.stringify(tagsel);
     $('#selected-tags')[0].innerHTML += `<span class="badge badge-pill search-tag" style="background-color:${tags[$(this)[0].value]}">${$(this)[0].value}<i class="fa fa-times" onclick="removeTag(event)" aria-hidden="true"></i></span>`;
+    showWithTags();
   }
-
-  
-    
-    
-    // $(dropdown).find('#selected-tags').text($(this)[0].value);
-    // $(dropdown).find('#selected-tags').dropdown('toggle');
 
   })
 });
